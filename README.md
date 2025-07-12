@@ -1,8 +1,43 @@
 # 🧩 Business Model Canvas
 
-**Business Model Canvas** is a responsive and interactive website designed to help users visualize, understand, and map out key components of a business model. The platform provides a structured layout that includes sections like Key Partners, Value Propositions, Customer Segments, Revenue Streams, and more — all organized in a clear and user-friendly interface.
+A modern, responsive web app built using **React**, **Vite**, and **Tailwind CSS** to visualize and interact with a Business Model Canvas. This project is deployed live via **GitHub Pages**.
 
-Built using **React**, **Vite**, and **Tailwind CSS**, this site offers fast performance and a modern design, making it ideal for entrepreneurs, students, and business professionals to plan and communicate their business ideas effectively.
+![GitHub Pages Status](https://img.shields.io/github/deployments/muroyyy/business-model-canvas/github-pages?label=GitHub%20Pages&logo=github)
 
-Visit the live site here:  
-🔗 [https://muroyyy.github.io/business-model-canvas/](https://muroyyy.github.io/business-model-canvas/)
+## 🚀 Live Demo
+
+🔗 [Visit the Website](https://muroyyy.github.io/business-model-canvas/)
+
+---
+
+## 🛠️ Tech Stack
+
+- ⚛️ **React** – UI rendering
+- ⚡ **Vite** – Lightning-fast dev server and bundler
+- 🎨 **Tailwind CSS** – Utility-first CSS framework
+- 🧹 **ESLint** – Code linting
+- 📦 **Node.js + npm** – Package management
+- ☁️ **GitHub Pages** – Hosting
+- 🔄 **GitHub Actions** – CI/CD workflow
+
+---
+
+## 📁 Project Structure
+
+/
+├── .bolt/ # Project settings
+├── src/ # React components & logic
+├── index.html # Main HTML entry
+├── package.json # Project metadata and dependencies
+├── tailwind.config.js # Tailwind setup
+├── postcss.config.js # PostCSS plugins
+├── vite.config.ts # Vite config with base path
+└── tsconfig*.json # TypeScript configs
+
+---
+
+## 🧩 Features
+- 📱 Fully responsive layout
+- 🧠 Modular architecture using React components
+- 🎯 Editable business model canvas (future enhancement)
+- 💨 Fast build and deploy via Vite and GitHub Actions
