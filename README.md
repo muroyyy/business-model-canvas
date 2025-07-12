@@ -31,23 +31,23 @@ A modern, responsive web app built using **React**, **Vite**, and **Tailwind CSS
 ├── package-lock.json
 ├── package.json
 ├── postcss.config.js
-├── src
-│   ├── App.tsx
-│   ├── components
-│   │   ├── CanvasForm.tsx
-│   │   ├── CanvasVisualization.tsx
-│   │   ├── SectionTooltip.tsx
-│   │   └── ThemeSelector.tsx
-│   ├── index.css
-│   ├── main.tsx
-│   ├── types
-│   │   └── canvas.ts
-│   └── vite-env.d.ts
 ├── tailwind.config.js
 ├── tsconfig.app.json
 ├── tsconfig.json
 ├── tsconfig.node.json
-└── vite.config.ts
+├── vite.config.ts
+├── vite-env.d.ts
+└── src
+    ├── App.tsx
+    ├── index.css
+    ├── main.tsx
+    ├── canvas.ts
+    ├── types
+    └── components
+        ├── CanvasForm.tsx
+        ├── CanvasVisualization.tsx
+        ├── SectionTooltip.tsx
+        └── ThemeSelector.tsx
 
 ---
 
