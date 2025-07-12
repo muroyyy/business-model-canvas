@@ -24,6 +24,7 @@ A modern, responsive web app built using **React**, **Vite**, and **Tailwind CSS
 
 ## 📁 Project Structure
 
+```
 .
 ├── README.md
 ├── eslint.config.js
@@ -48,6 +49,7 @@ A modern, responsive web app built using **React**, **Vite**, and **Tailwind CSS
         ├── CanvasVisualization.tsx
         ├── SectionTooltip.tsx
         └── ThemeSelector.tsx
+```
 
 ---
 
