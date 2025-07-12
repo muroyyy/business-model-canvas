@@ -570,23 +570,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
         )}
         
         <div 
-          ref={canvasRef}
-          className="rounded-2xl shadow-2xl p-8"
-          style={{ 
-            backgroundColor: selectedTheme.colors.background,
-            aspectRatio: '1.414', 
-            maxWidth: '100%' 
-          }}
-        >
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2" style={{ color: selectedTheme.colors.text }}>
-              {format === 'apu' ? 'APU Academic' : 'General'} Business Model Canvas
-            </h1>
-            <div className="flex items-center justify-center space-x-2">
-              <span className="text-xl">{selectedTheme.icon}</span>
-              <span style={{ color: selectedTheme.colors.text }}>{selectedTheme.name} Theme • {format.toUpperCase()}</span>
-            </div>
-          </div>
           
           {format === 'general' ? (
             <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full">
