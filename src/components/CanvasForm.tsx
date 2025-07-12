@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { BusinessModelCanvas, Theme, sectionGuides } from '../types/canvas';
-import { Save, Eye, Sparkles } from 'lucide-react';
+import { BusinessModelCanvas, Theme, sectionGuides, CanvasFormat } from '../types/canvas';
+import { Save, Eye, Sparkles, Quote } from 'lucide-react';
 import SectionTooltip from './SectionTooltip';
 
 interface CanvasFormProps {
   canvas: BusinessModelCanvas;
+  format: CanvasFormat;
   onChange: (field: keyof BusinessModelCanvas, value: string) => void;
+  onCitationChange: (field: keyof BusinessModelCanvas, value: string) => void;
   onGenerate: () => void;
   onPreview: () => void;
   selectedTheme: Theme;
@@ -13,14 +15,16 @@ interface CanvasFormProps {
 
 const CanvasForm: React.FC<CanvasFormProps> = ({ 
   canvas, 
+  format,
   onChange, 
+  onCitationChange,
   onGenerate, 
   onPreview, 
   selectedTheme 
 }) => {
   const [focusedField, setFocusedField] = useState<keyof BusinessModelCanvas | null>(null);
 
-  const sections = [
+  const generalSections = [
     { key: 'keyPartnerships', label: 'Key Partnerships', icon: '🤝' },
     { key: 'keyActivities', label: 'Key Activities', icon: '⚡' },
     { key: 'keyResources', label: 'Key Resources', icon: '🎯' },
@@ -32,8 +36,24 @@ const CanvasForm: React.FC<CanvasFormProps> = ({
     { key: 'revenueStreams', label: 'Revenue Streams', icon: '💵' },
   ] as const;
 
-  const isFormComplete = Object.values(canvas).every(value => value.trim() !== '');
-  const completedSections = Object.values(canvas).filter(value => value.trim() !== '').length;
+  const apuAdditionalSections = [
+    { key: 'ipProtection', label: 'IP Protection', icon: '🛡️' },
+    { key: 'technologyTransfer', label: 'Technology Transfer', icon: '🔬' },
+    { key: 'regulatoryRequirements', label: 'Regulatory Requirements', icon: '📋' },
+    { key: 'leanStartup', label: 'Lean Startup', icon: '🚀' },
+    { key: 'marketPresence', label: 'Market Presence', icon: '🌐' },
+    { key: 'organizationalCulture', label: 'Organizational Culture', icon: '🏢' },
+  ] as const;
+
+  const sections = format === 'apu' ? [...generalSections, ...apuAdditionalSections] : generalSections;
+  
+  const requiredFields = format === 'apu' 
+    ? [...generalSections.map(s => s.key), ...apuAdditionalSections.map(s => s.key)]
+    : generalSections.map(s => s.key);
+    
+  const isFormComplete = requiredFields.every(field => canvas[field]?.trim() !== '');
+  const completedSections = requiredFields.filter(field => canvas[field]?.trim() !== '').length;
+  const totalSections = requiredFields.length;
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -43,23 +63,26 @@ const CanvasForm: React.FC<CanvasFormProps> = ({
           <Sparkles className="w-8 h-8 text-white" />
         </div>
         <h1 className="text-4xl font-bold mb-2" style={{ color: selectedTheme.colors.text }}>
-          Business Model Canvas Generator
+          {format === 'apu' ? 'APU Academic' : 'General'} Business Model Canvas
         </h1>
         <p className="text-gray-600 mb-4">
-          Create your comprehensive business model with interactive guidance
+          {format === 'apu' 
+            ? 'Create your academic business model with detailed justifications and citations'
+            : 'Create your comprehensive business model with interactive guidance'
+          }
         </p>
         
         {/* Progress indicator */}
         <div className="max-w-md mx-auto">
           <div className="flex justify-between text-sm text-gray-600 mb-2">
             <span>Progress</span>
-            <span>{completedSections}/9 sections</span>
+            <span>{completedSections}/{totalSections} sections</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div 
               className="h-2 rounded-full transition-all duration-500"
               style={{ 
-                width: `${(completedSections / 9) * 100}%`,
+                width: `${(completedSections / totalSections) * 100}%`,
                 backgroundColor: selectedTheme.colors.primary
               }}
             />
@@ -67,16 +90,16 @@ const CanvasForm: React.FC<CanvasFormProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div className={`grid grid-cols-1 ${format === 'apu' ? 'lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'} gap-6 mb-8`}>
         {sections.map(({ key, label, icon }) => {
           const guide = sectionGuides[key];
-          const isCompleted = canvas[key].trim() !== '';
+          const isCompleted = canvas[key]?.trim() !== '';
           const isFocused = focusedField === key;
           
           return (
             <div 
               key={key} 
-              className={`bg-white rounded-xl shadow-lg border-2 p-6 transition-all duration-300 hover:shadow-xl ${
+              className={`bg-white rounded-xl shadow-lg border-2 p-6 transition-all duration-300 hover:shadow-xl ${format === 'apu' ? 'min-h-[300px]' : ''} ${
                 isFocused 
                   ? 'border-blue-400 shadow-blue-100' 
                   : isCompleted 
@@ -98,26 +121,45 @@ const CanvasForm: React.FC<CanvasFormProps> = ({
                   {isCompleted && (
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                   )}
-                  <SectionTooltip guide={guide} />
+                  <SectionTooltip guide={guide} format={format} />
                 </div>
               </div>
               
               <textarea
-                value={canvas[key]}
+                value={canvas[key] || ''}
                 onChange={(e) => onChange(key, e.target.value)}
                 onFocus={() => setFocusedField(key)}
                 onBlur={() => setFocusedField(null)}
-                placeholder={`Describe your ${label.toLowerCase()}...`}
-                className="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:border-transparent text-sm transition-all duration-200"
+                placeholder={format === 'apu' 
+                  ? `Provide detailed analysis of your ${label.toLowerCase()} with justifications...`
+                  : `Describe your ${label.toLowerCase()}...`
+                }
+                className={`w-full ${format === 'apu' ? 'h-40' : 'h-32'} p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:border-transparent text-sm transition-all duration-200`}
                 style={{
                   focusRingColor: selectedTheme.colors.primary,
-                  backgroundColor: isFocused ? selectedTheme.colors.sections[key] + '20' : 'white'
+                  backgroundColor: isFocused ? (selectedTheme.colors.sections[key as keyof typeof selectedTheme.colors.sections] || selectedTheme.colors.background) + '20' : 'white'
                 }}
               />
               
+              {/* Citation field for APU format */}
+              {format === 'apu' && (
+                <div className="mt-3">
+                  <div className="flex items-center mb-2">
+                    <Quote className="w-3 h-3 mr-1 text-gray-500" />
+                    <label className="text-xs font-medium text-gray-600">Citations & References</label>
+                  </div>
+                  <textarea
+                    value={canvas.citations?.[key] || ''}
+                    onChange={(e) => onCitationChange(key, e.target.value)}
+                    placeholder="Add citations, references, and sources..."
+                    className="w-full h-16 p-2 border border-gray-200 rounded-md resize-none text-xs text-gray-600 focus:ring-1 focus:border-blue-300"
+                  />
+                </div>
+              )}
+              
               {/* Character count */}
               <div className="text-xs text-gray-500 mt-2 text-right">
-                {canvas[key].length} characters
+                {canvas[key]?.length || 0} characters
               </div>
             </div>
           );
@@ -158,7 +200,7 @@ const CanvasForm: React.FC<CanvasFormProps> = ({
         
         {!isFormComplete && (
           <p className="text-sm text-gray-500">
-            Complete all {9 - completedSections} remaining sections to generate your final canvas
+            Complete all {totalSections - completedSections} remaining sections to generate your final canvas
           </p>
         )}
       </div>

@@ -1,18 +1,21 @@
 import React from 'react';
-import { Theme, themes } from '../types/canvas';
+import { Theme, themes, CanvasFormat } from '../types/canvas';
 import { Palette } from 'lucide-react';
 
 interface ThemeSelectorProps {
   selectedTheme: Theme;
   onThemeChange: (theme: Theme) => void;
+  selectedFormat: CanvasFormat;
 }
 
-const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onThemeChange }) => {
+const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onThemeChange, selectedFormat }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
       <div className="flex items-center mb-4">
         <Palette className="w-5 h-5 mr-2 text-gray-600" />
-        <h3 className="text-lg font-semibold text-gray-800">Choose Your Theme</h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Choose Your Theme {selectedFormat === 'apu' && '(Academic Format)'}
+        </h3>
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

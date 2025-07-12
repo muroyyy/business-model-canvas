@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { SectionGuide } from '../types/canvas';
+import { SectionGuide, CanvasFormat } from '../types/canvas';
 import { HelpCircle, X, Lightbulb, CheckCircle } from 'lucide-react';
 
 interface SectionTooltipProps {
   guide: SectionGuide;
+  format: CanvasFormat;
   position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
-const SectionTooltip: React.FC<SectionTooltipProps> = ({ guide, position = 'top' }) => {
+const SectionTooltip: React.FC<SectionTooltipProps> = ({ guide, format, position = 'top' }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const positionClasses = {
@@ -36,7 +37,7 @@ const SectionTooltip: React.FC<SectionTooltipProps> = ({ guide, position = 'top'
           />
           
           {/* Tooltip */}
-          <div className={`absolute z-50 w-80 bg-white rounded-lg shadow-xl border border-gray-200 p-4 ${positionClasses[position]}`}>
+          <div className={`absolute z-50 ${format === 'apu' ? 'w-96' : 'w-80'} bg-white rounded-lg shadow-xl border border-gray-200 p-4 ${positionClasses[position]}`}>
             <div className="flex justify-between items-start mb-3">
               <h4 className="font-semibold text-gray-800 text-sm">{guide.title}</h4>
               <button
@@ -48,6 +49,23 @@ const SectionTooltip: React.FC<SectionTooltipProps> = ({ guide, position = 'top'
             </div>
             
             <p className="text-gray-600 text-xs mb-3">{guide.description}</p>
+            
+            {format === 'apu' && guide.apuPrompts && (
+              <div className="mb-3">
+                <div className="flex items-center mb-2">
+                  <span className="w-3 h-3 mr-1 text-blue-500">📝</span>
+                  <span className="text-xs font-medium text-gray-700">Discussion Prompts:</span>
+                </div>
+                <ul className="space-y-1">
+                  {guide.apuPrompts.map((prompt, index) => (
+                    <li key={index} className="text-xs text-gray-600 flex items-start">
+                      <span className="w-1 h-1 bg-blue-400 rounded-full mt-1.5 mr-2 flex-shrink-0" />
+                      {prompt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             
             <div className="mb-3">
               <div className="flex items-center mb-2">
@@ -78,6 +96,23 @@ const SectionTooltip: React.FC<SectionTooltipProps> = ({ guide, position = 'top'
                 ))}
               </ul>
             </div>
+            
+            {format === 'apu' && guide.justificationAreas && (
+              <div>
+                <div className="flex items-center mb-2">
+                  <span className="w-3 h-3 mr-1 text-purple-500">🎯</span>
+                  <span className="text-xs font-medium text-gray-700">Justification Areas:</span>
+                </div>
+                <ul className="space-y-1">
+                  {guide.justificationAreas.map((area, index) => (
+                    <li key={index} className="text-xs text-gray-600 flex items-start">
+                      <span className="w-1 h-1 bg-purple-400 rounded-full mt-1.5 mr-2 flex-shrink-0" />
+                      {area}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </>
       )}
