@@ -24,15 +24,30 @@ A modern, responsive web app built using **React**, **Vite**, and **Tailwind CSS
 
 ## 📁 Project Structure
 
-/
-├── .bolt/ # Project settings
-├── src/ # React components & logic
-├── index.html # Main HTML entry
-├── package.json # Project metadata and dependencies
-├── tailwind.config.js # Tailwind setup
-├── postcss.config.js # PostCSS plugins
-├── vite.config.ts # Vite config with base path
-└── tsconfig*.json # TypeScript configs
+.
+├── README.md
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── src
+│   ├── App.tsx
+│   ├── components
+│   │   ├── CanvasForm.tsx
+│   │   ├── CanvasVisualization.tsx
+│   │   ├── SectionTooltip.tsx
+│   │   └── ThemeSelector.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   ├── types
+│   │   └── canvas.ts
+│   └── vite-env.d.ts
+├── tailwind.config.js
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 
 ---
 
