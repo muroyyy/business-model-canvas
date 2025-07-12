@@ -202,143 +202,142 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
         
         {format === 'general' ? (
           <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full">
-          {/* Key Partnerships */}
-          <div 
-            className={`${sectionStyle} row-span-2`}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.keyPartnerships,
-              borderColor: selectedTheme.colors.primary + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.keyPartnerships}</span>
-              Key Partnerships
+            {/* Key Partnerships */}
+            <div 
+              className={`${sectionStyle} row-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.keyPartnerships,
+                borderColor: selectedTheme.colors.primary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.keyPartnerships}</span>
+                Key Partnerships
+              </div>
+              {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
             </div>
-            {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
-          </div>
 
-          {/* Key Activities */}
-          <div 
-            className={sectionStyle}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.keyActivities,
-              borderColor: selectedTheme.colors.secondary + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.keyActivities}</span>
-              Key Activities
+            {/* Key Activities */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.keyActivities,
+                borderColor: selectedTheme.colors.secondary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.keyActivities}</span>
+                Key Activities
+              </div>
+              {renderSectionContent('keyActivities', canvas.keyActivities, canvas.citations?.keyActivities)}
             </div>
-            {renderSectionContent('keyActivities', canvas.keyActivities, canvas.citations?.keyActivities)}
-          </div>
 
-          {/* Value Proposition */}
-          <div 
-            className={`${sectionStyle} row-span-2`}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.valueProposition,
-              borderColor: selectedTheme.colors.accent + '60'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.valueProposition}</span>
-              Value Proposition
+            {/* Value Proposition */}
+            <div 
+              className={`${sectionStyle} row-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.valueProposition,
+                borderColor: selectedTheme.colors.accent + '60'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.valueProposition}</span>
+                Value Proposition
+              </div>
+              {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
             </div>
-            {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
-          </div>
 
-          {/* Customer Relationships */}
-          <div 
-            className={sectionStyle}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.customerRelationships,
-              borderColor: selectedTheme.colors.primary + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.customerRelationships}</span>
-              Customer Relationships
+            {/* Customer Relationships */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.customerRelationships,
+                borderColor: selectedTheme.colors.primary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.customerRelationships}</span>
+                Customer Relationships
+              </div>
+              {renderSectionContent('customerRelationships', canvas.customerRelationships, canvas.citations?.customerRelationships)}
             </div>
-            {renderSectionContent('customerRelationships', canvas.customerRelationships, canvas.citations?.customerRelationships)}
-          </div>
 
-          {/* Customer Segments */}
-          <div 
-            className={`${sectionStyle} row-span-2`}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.customerSegments,
-              borderColor: selectedTheme.colors.secondary + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.customerSegments}</span>
-              Customer Segments
+            {/* Customer Segments */}
+            <div 
+              className={`${sectionStyle} row-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.customerSegments,
+                borderColor: selectedTheme.colors.secondary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.customerSegments}</span>
+                Customer Segments
+              </div>
+              {renderSectionContent('customerSegments', canvas.customerSegments, canvas.citations?.customerSegments)}
             </div>
-            {renderSectionContent('customerSegments', canvas.customerSegments, canvas.citations?.customerSegments)}
-          </div>
 
-          {/* Key Resources */}
-          <div 
-            className={sectionStyle}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.keyResources,
-              borderColor: selectedTheme.colors.accent + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.keyResources}</span>
-              Key Resources
+            {/* Key Resources */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.keyResources,
+                borderColor: selectedTheme.colors.accent + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.keyResources}</span>
+                Key Resources
+              </div>
+              {renderSectionContent('keyResources', canvas.keyResources, canvas.citations?.keyResources)}
             </div>
-            {renderSectionContent('keyResources', canvas.keyResources, canvas.citations?.keyResources)}
-          </div>
 
-          {/* Channels */}
-          <div 
-            className={sectionStyle}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.channels,
-              borderColor: selectedTheme.colors.primary + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.channels}</span>
-              Channels
+            {/* Channels */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.channels,
+                borderColor: selectedTheme.colors.primary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.channels}</span>
+                Channels
+              </div>
+              {renderSectionContent('channels', canvas.channels, canvas.citations?.channels)}
             </div>
-            {renderSectionContent('channels', canvas.channels, canvas.citations?.channels)}
-          </div>
 
-          {/* Cost Structure */}
-          <div 
-            className={`${sectionStyle} col-span-2`}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.costStructure,
-              borderColor: selectedTheme.colors.secondary + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.costStructure}</span>
-              Cost Structure
+            {/* Cost Structure */}
+            <div 
+              className={`${sectionStyle} col-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.costStructure,
+                borderColor: selectedTheme.colors.secondary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.costStructure}</span>
+                Cost Structure
+              </div>
+              {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
             </div>
-            {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
-          </div>
 
-          {/* Revenue Streams */}
-          <div 
-            className={`${sectionStyle} col-span-3`}
-            style={{ 
-              backgroundColor: selectedTheme.colors.sections.revenueStreams,
-              borderColor: selectedTheme.colors.accent + '40'
-            }}
-          >
-            <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-              <span className="mr-2">{sectionIcons.revenueStreams}</span>
-              Revenue Streams
+            {/* Revenue Streams */}
+            <div 
+              className={`${sectionStyle} col-span-3`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.revenueStreams,
+                borderColor: selectedTheme.colors.accent + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.revenueStreams}</span>
+                Revenue Streams
+              </div>
+              {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
             </div>
-            {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
-          </div>
           </div>
         ) : (
-          // APU Format Layout
           <div className="space-y-6">
             {/* Core Business Model Sections */}
             <div className="grid grid-cols-3 gap-4">
@@ -568,379 +567,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
             </div>
           </div>
         )}
-        
-        <div 
-          
-          {format === 'general' ? (
-            <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full">
-            {/* Key Partnerships */}
-            <div 
-              className={`${sectionStyle} row-span-2`}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.keyPartnerships,
-                borderColor: selectedTheme.colors.primary + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.keyPartnerships}</span>
-                Key Partnerships
-              </div>
-              {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
-            </div>
-
-            {/* Key Activities */}
-            <div 
-              className={sectionStyle}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.keyActivities,
-                borderColor: selectedTheme.colors.secondary + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.keyActivities}</span>
-                Key Activities
-              </div>
-              {renderSectionContent('keyActivities', canvas.keyActivities, canvas.citations?.keyActivities)}
-            </div>
-
-            {/* Value Proposition */}
-            <div 
-              className={`${sectionStyle} row-span-2`}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.valueProposition,
-                borderColor: selectedTheme.colors.accent + '60'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.valueProposition}</span>
-                Value Proposition
-              </div>
-              {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
-            </div>
-
-            {/* Customer Relationships */}
-            <div 
-              className={sectionStyle}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.customerRelationships,
-                borderColor: selectedTheme.colors.primary + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.customerRelationships}</span>
-                Customer Relationships
-              </div>
-              {renderSectionContent('customerRelationships', canvas.customerRelationships, canvas.citations?.customerRelationships)}
-            </div>
-
-            {/* Customer Segments */}
-            <div 
-              className={`${sectionStyle} row-span-2`}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.customerSegments,
-                borderColor: selectedTheme.colors.secondary + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.customerSegments}</span>
-                Customer Segments
-              </div>
-              {renderSectionContent('customerSegments', canvas.customerSegments, canvas.citations?.customerSegments)}
-            </div>
-
-            {/* Key Resources */}
-            <div 
-              className={sectionStyle}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.keyResources,
-                borderColor: selectedTheme.colors.accent + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.keyResources}</span>
-                Key Resources
-              </div>
-              {renderSectionContent('keyResources', canvas.keyResources, canvas.citations?.keyResources)}
-            </div>
-
-            {/* Channels */}
-            <div 
-              className={sectionStyle}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.channels,
-                borderColor: selectedTheme.colors.primary + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.channels}</span>
-                Channels
-              </div>
-              {renderSectionContent('channels', canvas.channels, canvas.citations?.channels)}
-            </div>
-
-            {/* Cost Structure */}
-            <div 
-              className={`${sectionStyle} col-span-2`}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.costStructure,
-                borderColor: selectedTheme.colors.secondary + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.costStructure}</span>
-                Cost Structure
-              </div>
-              {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
-            </div>
-
-            {/* Revenue Streams */}
-            <div 
-              className={`${sectionStyle} col-span-3`}
-              style={{ 
-                backgroundColor: selectedTheme.colors.sections.revenueStreams,
-                borderColor: selectedTheme.colors.accent + '40'
-              }}
-            >
-              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.revenueStreams}</span>
-                Revenue Streams
-              </div>
-              {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
-            </div>
-            </div>
-          ) : (
-            // APU Format Layout
-            <div className="space-y-6">
-              {/* Core Business Model Sections */}
-              <div className="grid grid-cols-3 gap-4">
-                {/* Key Partnerships */}
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.keyPartnerships,
-                    borderColor: selectedTheme.colors.primary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.keyPartnerships}</span>
-                    Key Partnerships
-                  </div>
-                  {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
-                </div>
-
-                {/* Value Proposition */}
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.valueProposition,
-                    borderColor: selectedTheme.colors.accent + '60'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.valueProposition}</span>
-                    Value Proposition
-                  </div>
-                  {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
-                </div>
-
-                {/* Customer Segments */}
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.customerSegments,
-                    borderColor: selectedTheme.colors.secondary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.customerSegments}</span>
-                    Customer Segments
-                  </div>
-                  {renderSectionContent('customerSegments', canvas.customerSegments, canvas.citations?.customerSegments)}
-                </div>
-              </div>
-
-              {/* Activities, Resources, Channels, Relationships */}
-              <div className="grid grid-cols-4 gap-4">
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.keyActivities,
-                    borderColor: selectedTheme.colors.secondary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.keyActivities}</span>
-                    Key Activities
-                  </div>
-                  {renderSectionContent('keyActivities', canvas.keyActivities, canvas.citations?.keyActivities)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.keyResources,
-                    borderColor: selectedTheme.colors.accent + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.keyResources}</span>
-                    Key Resources
-                  </div>
-                  {renderSectionContent('keyResources', canvas.keyResources, canvas.citations?.keyResources)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.channels,
-                    borderColor: selectedTheme.colors.primary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.channels}</span>
-                    Channels
-                  </div>
-                  {renderSectionContent('channels', canvas.channels, canvas.citations?.channels)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.customerRelationships,
-                    borderColor: selectedTheme.colors.primary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.customerRelationships}</span>
-                    Customer Relationships
-                  </div>
-                  {renderSectionContent('customerRelationships', canvas.customerRelationships, canvas.citations?.customerRelationships)}
-                </div>
-              </div>
-
-              {/* APU-Specific Sections */}
-              <div className="grid grid-cols-3 gap-4">
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.ipProtection,
-                    borderColor: selectedTheme.colors.primary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.ipProtection}</span>
-                    IP Protection
-                  </div>
-                  {renderSectionContent('ipProtection', canvas.ipProtection || '', canvas.citations?.ipProtection)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.technologyTransfer,
-                    borderColor: selectedTheme.colors.secondary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.technologyTransfer}</span>
-                    Technology Transfer
-                  </div>
-                  {renderSectionContent('technologyTransfer', canvas.technologyTransfer || '', canvas.citations?.technologyTransfer)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.regulatoryRequirements,
-                    borderColor: selectedTheme.colors.accent + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.regulatoryRequirements}</span>
-                    Regulatory Requirements
-                  </div>
-                  {renderSectionContent('regulatoryRequirements', canvas.regulatoryRequirements || '', canvas.citations?.regulatoryRequirements)}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.leanStartup,
-                    borderColor: selectedTheme.colors.primary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.leanStartup}</span>
-                    Lean Startup
-                  </div>
-                  {renderSectionContent('leanStartup', canvas.leanStartup || '', canvas.citations?.leanStartup)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.marketPresence,
-                    borderColor: selectedTheme.colors.secondary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.marketPresence}</span>
-                    Market Presence
-                  </div>
-                  {renderSectionContent('marketPresence', canvas.marketPresence || '', canvas.citations?.marketPresence)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.organizationalCulture,
-                    borderColor: selectedTheme.colors.accent + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.organizationalCulture}</span>
-                    Organizational Culture
-                  </div>
-                  {renderSectionContent('organizationalCulture', canvas.organizationalCulture || '', canvas.citations?.organizationalCulture)}
-                </div>
-              </div>
-
-              {/* Cost Structure and Revenue Streams */}
-              <div className="grid grid-cols-2 gap-4">
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.costStructure,
-                    borderColor: selectedTheme.colors.secondary + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.costStructure}</span>
-                    Cost Structure
-                  </div>
-                  {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
-                </div>
-
-                <div 
-                  className={sectionStyle}
-                  style={{ 
-                    backgroundColor: selectedTheme.colors.sections.revenueStreams,
-                    borderColor: selectedTheme.colors.accent + '40'
-                  }}
-                >
-                  <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                    <span className="mr-2">{sectionIcons.revenueStreams}</span>
-                    Revenue Streams
-                  </div>
-                  {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
-                </div>
-              </div>
-            </div>
-          )}
-          </div>
-        </div>
+      </div>
     </div>
   );
 };
