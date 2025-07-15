@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FormatSelector from './components/FormatSelector';
 import CanvasForm from './components/CanvasForm';
-import CanvasVisualization from './components/CanvasVisualization';
+import { CanvasVisualization } from './components/CanvasVisualization';
 import ThemeSelector from './components/ThemeSelector';
 import { BusinessModelCanvas, initialCanvas, themes, Theme, CanvasFormat } from './types/canvas';
 import { ArrowLeft, Sparkles } from 'lucide-react';
