@@ -77,7 +77,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
 
   const sectionStyle = "border-2 p-4 rounded-xl h-full min-h-[120px] transition-all duration-300 hover:shadow-lg";
   const titleStyle = "font-bold text-sm mb-3 uppercase tracking-wide flex items-center";
-  const contentStyle = `${format === 'apu' ? 'text-xs' : 'text-sm'} leading-relaxed`;
+  const contentStyle = `${format === 'apu' ? 'text-xs' : 'text-sm'} leading-relaxed whitespace-pre-line`;
   const citationStyle = "text-xs text-gray-500 mt-2 italic border-t pt-2";
 
   const sectionIcons = {
