@@ -145,9 +145,9 @@ function App() {
           </div>
           
           <CanvasVisualization 
-            canvas={canvas}
+            data={canvas}
             format={selectedFormat}
-            selectedTheme={selectedTheme}
+            theme={selectedTheme}
             onEdit={handleEdit}
             isPreview={viewMode === 'preview'}
           />

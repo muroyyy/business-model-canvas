@@ -9,6 +9,7 @@ interface CanvasVisualizationProps {
   theme: Theme;
   format: CanvasFormat;
   onEdit: () => void;
+  isPreview?: boolean; 
 }
 
 export const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
