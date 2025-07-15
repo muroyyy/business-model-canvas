@@ -1,314 +1,575 @@
-import React from 'react';
-import { Download, Maximize2, Edit3 } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { BusinessModelCanvas, Theme, CanvasFormat } from '../types/canvas';
+import { Download, FileImage, FileText, Edit3, Maximize2, Minimize2 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { CanvasData, Theme, CanvasFormat } from '../types/canvas';
 
 interface CanvasVisualizationProps {
-  data: CanvasData;
-  theme: Theme;
+  canvas: BusinessModelCanvas;
   format: CanvasFormat;
+  selectedTheme: Theme;
   onEdit: () => void;
-  isPreview?: boolean; 
+  isPreview?: boolean;
 }
 
-export const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
-  data,
-  theme,
+const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({ 
+  canvas, 
   format,
-  onEdit,
+  selectedTheme, 
+  onEdit, 
+  isPreview = false 
 }) => {
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
-  const [isExporting, setIsExporting] = React.useState(false);
-  const canvasRef = React.useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
-  // Helper function to format text with proper line breaks for bullet points
-  const formatTextContent = (text: string) => {
-    if (!text) return text;
-    
-    // Split by common bullet point patterns and join with line breaks
-    const bulletPatterns = [
-      /\s*[-•·*]\s*/g,  // Dash, bullet, middle dot, asterisk
-      /\s*\d+\.\s*/g,   // Numbered lists (1. 2. 3.)
-      /\s*[a-zA-Z]\.\s*/g, // Lettered lists (a. b. c.)
-    ];
-    
-    let formattedText = text;
-    
-    // Process each bullet pattern
-    bulletPatterns.forEach(pattern => {
-      const parts = formattedText.split(pattern);
-      if (parts.length > 1) {
-        // Rejoin with line breaks, keeping the bullet markers
-        const matches = formattedText.match(pattern) || [];
-        formattedText = parts[0]; // First part (before any bullets)
-        
-        for (let i = 1; i < parts.length; i++) {
-          const bullet = matches[i - 1] || '• ';
-          formattedText += '\n' + bullet.trim() + ' ' + parts[i].trim();
-        }
-      }
-    });
-    
-    return formattedText;
-  };
-
-  const renderCanvasSection = (
-    key: string,
-    title: string,
-    content: string,
-    placeholder: string,
-    icon: string,
-    className: string = ''
-  ) => (
-    <div key={key} className={`p-4 rounded-lg border-2 ${className}`} style={{ 
-      backgroundColor: theme.colors.cardBg,
-      borderColor: theme.colors.border 
-    }}>
-      <div className="text-xs font-medium mb-2 flex items-center" style={{ color: theme.colors.text }}>
-        <span className="mr-1">{icon}</span>
-        {title}
-      </div>
-      <div className="text-xs leading-relaxed whitespace-pre-line" style={{ color: theme.colors.text }}>
-        {content ? formatTextContent(content) : placeholder}
-      </div>
-      {format === 'apu' && data.citations?.[key as keyof typeof data.citations] && (
-        <div className="mt-2 pt-2 border-t border-gray-200">
-          <div className="text-xs text-gray-500 mb-1">Citations:</div>
-          <div className="text-xs text-gray-600 italic whitespace-pre-line">
-            {formatTextContent(data.citations[key as keyof typeof data.citations] || '')}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
-  const exportCanvas = async (format: 'png' | 'jpeg' | 'pdf') => {
+  const downloadAsImage = async (imageFormat: 'png' | 'jpeg') => {
     if (!canvasRef.current) return;
-
     setIsExporting(true);
+
     try {
       const canvas = await html2canvas(canvasRef.current, {
         scale: 3,
+        backgroundColor: '#ffffff',
+        width: format === 'apu' ? 2400 : 1920,
+        height: format === 'apu' ? 1697 : 1357,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: '#ffffff',
-        width: 1190,
-        height: 842,
       });
 
-      if (format === 'pdf') {
-        const pdf = new jsPDF('landscape', 'mm', 'a4');
-        const imgData = canvas.toDataURL('image/png');
-        pdf.addImage(imgData, 'PNG', 0, 0, 297, 210);
-        pdf.save(`business-model-canvas-${theme.name.toLowerCase()}-${data.format}.pdf`);
-      } else {
-        const link = document.createElement('a');
-        link.download = `business-model-canvas-${theme.name.toLowerCase()}-${data.format}.${format}`;
-        link.href = canvas.toDataURL(`image/${format}`, 0.95);
-        link.click();
-      }
+      const link = document.createElement('a');
+      link.download = `business-model-canvas-${format}-${selectedTheme.name.toLowerCase()}.${imageFormat}`;
+      link.href = canvas.toDataURL(`image/${imageFormat}`, 0.95);
+      link.click();
     } catch (error) {
-      console.error('Export failed:', error);
+      console.error('Error generating image:', error);
     } finally {
       setIsExporting(false);
     }
   };
 
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
+  const downloadAsPDF = async () => {
+    if (!canvasRef.current) return;
+    setIsExporting(true);
+
+    try {
+      const canvas = await html2canvas(canvasRef.current, {
+        scale: 3,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        allowTaint: true,
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('landscape', 'mm', 'a4');
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`business-model-canvas-${format}-${selectedTheme.name.toLowerCase()}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
-  const canvasContent = (
-    <div className="w-full max-w-[1190px] mx-auto">
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold mb-2" style={{ color: theme.colors.text }}>
-          {format === 'apu' ? 'APU Academic Business Model Canvas' : 'Business Model Canvas'}
-        </h1>
-        <div className="flex items-center justify-center gap-2 text-sm" style={{ color: theme.colors.text }}>
-          <span style={{ color: theme.colors.primary }}>🎨</span>
-          <span>{theme.name} Theme • {format.toUpperCase()}</span>
+  const sectionStyle = "border-2 p-4 rounded-xl h-full min-h-[120px] transition-all duration-300 hover:shadow-lg";
+  const titleStyle = "font-bold text-sm mb-3 uppercase tracking-wide flex items-center";
+  const contentStyle = `${format === 'apu' ? 'text-xs' : 'text-sm'} leading-relaxed`;
+  const citationStyle = "text-xs text-gray-500 mt-2 italic border-t pt-2";
+
+  const sectionIcons = {
+    keyPartnerships: '🤝',
+    keyActivities: '⚡',
+    keyResources: '🎯',
+    valueProposition: '💎',
+    customerRelationships: '❤️',
+    channels: '📢',
+    customerSegments: '👥',
+    costStructure: '💰',
+    revenueStreams: '💵',
+    ipProtection: '🛡️',
+    technologyTransfer: '🔬',
+    regulatoryRequirements: '📋',
+    leanStartup: '🚀',
+    marketPresence: '🌐',
+    organizationalCulture: '🏢'
+  };
+
+  const renderSectionContent = (key: keyof BusinessModelCanvas, content: string, citation?: string) => (
+    <>
+      <div className={contentStyle} style={{ color: selectedTheme.colors.text }}>
+        {content || (isPreview ? `Add your ${key.replace(/([A-Z])/g, ' $1').toLowerCase()}...` : '')}
+      </div>
+      {format === 'apu' && citation && (
+        <div className={citationStyle}>
+          <strong>References:</strong> {citation}
+        </div>
+      )}
+    </>
+  );
+
+  return (
+    <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white overflow-auto' : 'max-w-7xl mx-auto'} p-6`}>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-3xl font-bold mb-2" style={{ color: selectedTheme.colors.text }}>
+            {isPreview ? 'Canvas Preview' : `Your ${format === 'apu' ? 'APU Academic' : 'General'} Business Model Canvas`}
+          </h2>
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">{selectedTheme.icon}</span>
+            <span className="text-gray-600">{selectedTheme.name} Theme • {format.toUpperCase()} Format</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
+          >
+            {isFullscreen ? <Minimize2 className="w-4 h-4 mr-2" /> : <Maximize2 className="w-4 h-4 mr-2" />}
+            {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+          </button>
+          
+          <button
+            onClick={onEdit}
+            className="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
+          >
+            <Edit3 className="w-4 h-4 mr-2" />
+            Edit Canvas
+          </button>
+          
+          {!isPreview && (
+            <div className="flex space-x-2">
+              <button
+                onClick={() => downloadAsImage('png')}
+                disabled={isExporting}
+                className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+              >
+                <FileImage className="w-4 h-4 mr-2" />
+                PNG
+              </button>
+              <button
+                onClick={() => downloadAsImage('jpeg')}
+                disabled={isExporting}
+                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                JPEG
+              </button>
+              <button
+                onClick={downloadAsPDF}
+                disabled={isExporting}
+                className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                PDF
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Canvas Grid */}
-      {format === 'general' ? (
-        <div className="grid grid-cols-5 gap-3 h-[600px]">
-          {/* Row 1 */}
-          <div className="col-span-1">
-            {renderCanvasSection('keyPartnerships', 'KEY PARTNERSHIPS', data.keyPartnerships, 'Add your key partnerships...', '🤝', 'h-full')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('keyActivities', 'KEY ACTIVITIES', data.keyActivities, 'Add your key activities...', '⚡', 'h-full')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('valueProposition', 'VALUE PROPOSITION', data.valueProposition, 'Add your value proposition...', '💎', 'h-full')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('customerRelationships', 'CUSTOMER RELATIONSHIPS', data.customerRelationships, 'Add your customer relationships...', '💝', 'h-full')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('customerSegments', 'CUSTOMER SEGMENTS', data.customerSegments, 'Add your customer segments...', '👥', 'h-full')}
-          </div>
-
-          {/* Row 2 */}
-          <div className="col-span-1">
-            {renderCanvasSection('keyResources', 'KEY RESOURCES', data.keyResources, 'Add your key resources...', '🎯', 'h-full')}
-          </div>
-          <div className="col-span-2">
-            {renderCanvasSection('channels', 'CHANNELS', data.channels, 'Add your channels...', '📡', 'h-full')}
-          </div>
-          <div className="col-span-2">
-            {renderCanvasSection('costStructure', 'COST STRUCTURE', data.costStructure, 'Add your cost structure...', '💰', 'h-full')}
-          </div>
-
-          {/* Row 3 */}
-          <div className="col-span-3">
-            {renderCanvasSection('revenueStreams', 'REVENUE STREAMS', data.revenueStreams, 'Add your revenue streams...', '💵', 'h-full')}
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-5 gap-3">
-          {/* APU Format - Row 1 */}
-          <div className="col-span-1">
-            {renderCanvasSection('keyPartnerships', 'KEY PARTNERSHIPS', data.keyPartnerships, 'Add your key partnerships...', '🤝')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('valueProposition', 'VALUE PROPOSITION', data.valueProposition, 'Add your value proposition...', '💎')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('customerSegments', 'CUSTOMER SEGMENTS', data.customerSegments, 'Add your customer segments...', '👥')}
-          </div>
-
-          {/* APU Format - Row 2 */}
-          <div className="col-span-1">
-            {renderCanvasSection('keyActivities', 'KEY ACTIVITIES', data.keyActivities, 'Add your key activities...', '⚡')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('keyResources', 'KEY RESOURCES', data.keyResources, 'Add your key resources...', '🎯')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('channels', 'CHANNELS', data.channels, 'Add your channels...', '📡')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('customerRelationships', 'CUSTOMER RELATIONSHIPS', data.customerRelationships, 'Add your customer relationships...', '💝')}
-          </div>
-
-          {/* APU Format - Row 3 */}
-          <div className="col-span-2">
-            {renderCanvasSection('costStructure', 'COST STRUCTURE', data.costStructure, 'Add your cost structure...', '💰')}
-          </div>
-          <div className="col-span-2">
-            {renderCanvasSection('revenueStreams', 'REVENUE STREAMS', data.revenueStreams, 'Add your revenue streams...', '💵')}
-          </div>
-
-          {/* APU Format - Additional Sections */}
-          <div className="col-span-1">
-            {renderCanvasSection('ipProtection', 'IP PROTECTION', data.ipProtection || '', 'Add IP protection details...', '🛡️')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('technologyTransfer', 'TECHNOLOGY TRANSFER', data.technologyTransfer || '', 'Add technology transfer details...', '🔄')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('regulatoryRequirements', 'REGULATORY REQUIREMENTS', data.regulatoryRequirements || '', 'Add regulatory requirements...', '📋')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('leanStartup', 'LEAN STARTUP', data.leanStartup || '', 'Add lean startup approach...', '🚀')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('marketPresence', 'MARKET PRESENCE', data.marketPresence || '', 'Add market presence strategy...', '🌍')}
-          </div>
-          <div className="col-span-1">
-            {renderCanvasSection('organizationalCulture', 'ORGANIZATIONAL CULTURE', data.organizationalCulture || '', 'Add organizational culture...', '🏢')}
+      {isExporting && (
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+            <span className="text-blue-800 text-sm">Generating high-quality export...</span>
           </div>
         </div>
       )}
-    </div>
-  );
 
-  if (isFullscreen) {
-    return (
-      <div className="fixed inset-0 z-50 bg-white overflow-auto">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Canvas Preview - Fullscreen</h2>
-            <button
-              onClick={toggleFullscreen}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+      <div 
+        ref={canvasRef}
+        className="rounded-2xl shadow-2xl p-8"
+        style={{ 
+          backgroundColor: selectedTheme.colors.background,
+          aspectRatio: '1.414', 
+          maxWidth: '100%' 
+        }}
+      >
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-2" style={{ color: selectedTheme.colors.text }}>
+            {format === 'apu' ? 'APU Academic' : 'General'} Business Model Canvas
+          </h1>
+          <div className="flex items-center justify-center space-x-2">
+            <span className="text-xl">{selectedTheme.icon}</span>
+            <span style={{ color: selectedTheme.colors.text }}>{selectedTheme.name} Theme • {format.toUpperCase()}</span>
+          </div>
+        </div>
+        
+        {format === 'general' ? (
+          <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full">
+            {/* Key Partnerships */}
+            <div 
+              className={`${sectionStyle} row-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.keyPartnerships,
+                borderColor: selectedTheme.colors.primary + '40'
+              }}
             >
-              Exit Fullscreen
-            </button>
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.keyPartnerships}</span>
+                Key Partnerships
+              </div>
+              {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
+            </div>
+
+            {/* Key Activities */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.keyActivities,
+                borderColor: selectedTheme.colors.secondary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.keyActivities}</span>
+                Key Activities
+              </div>
+              {renderSectionContent('keyActivities', canvas.keyActivities, canvas.citations?.keyActivities)}
+            </div>
+
+            {/* Value Proposition */}
+            <div 
+              className={`${sectionStyle} row-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.valueProposition,
+                borderColor: selectedTheme.colors.accent + '60'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.valueProposition}</span>
+                Value Proposition
+              </div>
+              {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
+            </div>
+
+            {/* Customer Relationships */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.customerRelationships,
+                borderColor: selectedTheme.colors.primary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.customerRelationships}</span>
+                Customer Relationships
+              </div>
+              {renderSectionContent('customerRelationships', canvas.customerRelationships, canvas.citations?.customerRelationships)}
+            </div>
+
+            {/* Customer Segments */}
+            <div 
+              className={`${sectionStyle} row-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.customerSegments,
+                borderColor: selectedTheme.colors.secondary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.customerSegments}</span>
+                Customer Segments
+              </div>
+              {renderSectionContent('customerSegments', canvas.customerSegments, canvas.citations?.customerSegments)}
+            </div>
+
+            {/* Key Resources */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.keyResources,
+                borderColor: selectedTheme.colors.accent + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.keyResources}</span>
+                Key Resources
+              </div>
+              {renderSectionContent('keyResources', canvas.keyResources, canvas.citations?.keyResources)}
+            </div>
+
+            {/* Channels */}
+            <div 
+              className={sectionStyle}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.channels,
+                borderColor: selectedTheme.colors.primary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.channels}</span>
+                Channels
+              </div>
+              {renderSectionContent('channels', canvas.channels, canvas.citations?.channels)}
+            </div>
+
+            {/* Cost Structure */}
+            <div 
+              className={`${sectionStyle} col-span-2`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.costStructure,
+                borderColor: selectedTheme.colors.secondary + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.costStructure}</span>
+                Cost Structure
+              </div>
+              {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
+            </div>
+
+            {/* Revenue Streams */}
+            <div 
+              className={`${sectionStyle} col-span-3`}
+              style={{ 
+                backgroundColor: selectedTheme.colors.sections.revenueStreams,
+                borderColor: selectedTheme.colors.accent + '40'
+              }}
+            >
+              <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                <span className="mr-2">{sectionIcons.revenueStreams}</span>
+                Revenue Streams
+              </div>
+              {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
+            </div>
           </div>
-          <div ref={canvasRef} className="bg-white p-8">
-            {canvasContent}
+        ) : (
+          <div className="space-y-6">
+            {/* Core Business Model Sections */}
+            <div className="grid grid-cols-3 gap-4">
+              {/* Key Partnerships */}
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.keyPartnerships,
+                  borderColor: selectedTheme.colors.primary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.keyPartnerships}</span>
+                  Key Partnerships
+                </div>
+                {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
+              </div>
+
+              {/* Value Proposition */}
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.valueProposition,
+                  borderColor: selectedTheme.colors.accent + '60'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.valueProposition}</span>
+                  Value Proposition
+                </div>
+                {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
+              </div>
+
+              {/* Customer Segments */}
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.customerSegments,
+                  borderColor: selectedTheme.colors.secondary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.customerSegments}</span>
+                  Customer Segments
+                </div>
+                {renderSectionContent('customerSegments', canvas.customerSegments, canvas.citations?.customerSegments)}
+              </div>
+            </div>
+
+            {/* Activities, Resources, Channels, Relationships */}
+            <div className="grid grid-cols-4 gap-4">
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.keyActivities,
+                  borderColor: selectedTheme.colors.secondary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.keyActivities}</span>
+                  Key Activities
+                </div>
+                {renderSectionContent('keyActivities', canvas.keyActivities, canvas.citations?.keyActivities)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.keyResources,
+                  borderColor: selectedTheme.colors.accent + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.keyResources}</span>
+                  Key Resources
+                </div>
+                {renderSectionContent('keyResources', canvas.keyResources, canvas.citations?.keyResources)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.channels,
+                  borderColor: selectedTheme.colors.primary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.channels}</span>
+                  Channels
+                </div>
+                {renderSectionContent('channels', canvas.channels, canvas.citations?.channels)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.customerRelationships,
+                  borderColor: selectedTheme.colors.primary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.customerRelationships}</span>
+                  Customer Relationships
+                </div>
+                {renderSectionContent('customerRelationships', canvas.customerRelationships, canvas.citations?.customerRelationships)}
+              </div>
+            </div>
+
+            {/* APU-Specific Sections */}
+            <div className="grid grid-cols-3 gap-4">
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.ipProtection,
+                  borderColor: selectedTheme.colors.primary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.ipProtection}</span>
+                  IP Protection
+                </div>
+                {renderSectionContent('ipProtection', canvas.ipProtection || '', canvas.citations?.ipProtection)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.technologyTransfer,
+                  borderColor: selectedTheme.colors.secondary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.technologyTransfer}</span>
+                  Technology Transfer
+                </div>
+                {renderSectionContent('technologyTransfer', canvas.technologyTransfer || '', canvas.citations?.technologyTransfer)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.regulatoryRequirements,
+                  borderColor: selectedTheme.colors.accent + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.regulatoryRequirements}</span>
+                  Regulatory Requirements
+                </div>
+                {renderSectionContent('regulatoryRequirements', canvas.regulatoryRequirements || '', canvas.citations?.regulatoryRequirements)}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.leanStartup,
+                  borderColor: selectedTheme.colors.primary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.leanStartup}</span>
+                  Lean Startup
+                </div>
+                {renderSectionContent('leanStartup', canvas.leanStartup || '', canvas.citations?.leanStartup)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.marketPresence,
+                  borderColor: selectedTheme.colors.secondary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.marketPresence}</span>
+                  Market Presence
+                </div>
+                {renderSectionContent('marketPresence', canvas.marketPresence || '', canvas.citations?.marketPresence)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.organizationalCulture,
+                  borderColor: selectedTheme.colors.accent + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.organizationalCulture}</span>
+                  Organizational Culture
+                </div>
+                {renderSectionContent('organizationalCulture', canvas.organizationalCulture || '', canvas.citations?.organizationalCulture)}
+              </div>
+            </div>
+
+            {/* Cost Structure and Revenue Streams */}
+            <div className="grid grid-cols-2 gap-4">
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.costStructure,
+                  borderColor: selectedTheme.colors.secondary + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.costStructure}</span>
+                  Cost Structure
+                </div>
+                {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
+              </div>
+
+              <div 
+                className={sectionStyle}
+                style={{ 
+                  backgroundColor: selectedTheme.colors.sections.revenueStreams,
+                  borderColor: selectedTheme.colors.accent + '40'
+                }}
+              >
+                <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
+                  <span className="mr-2">{sectionIcons.revenueStreams}</span>
+                  Revenue Streams
+                </div>
+                {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800">Canvas Preview</h2>
-          <p className="text-gray-600 flex items-center gap-2">
-            <span style={{ color: theme.colors.primary }}>🎨</span>
-            {theme.name} Theme • {format.toUpperCase()} Format
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <button
-            onClick={toggleFullscreen}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-          >
-            <Maximize2 size={16} />
-            Fullscreen
-          </button>
-          <button
-            onClick={onEdit}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
-          >
-            <Edit3 size={16} />
-            Edit Canvas
-          </button>
-        </div>
-      </div>
-
-      {/* Canvas */}
-      <div ref={canvasRef} className="bg-white p-8 rounded-lg shadow-lg">
-        {canvasContent}
-      </div>
-
-      {/* Export Options */}
-      <div className="flex justify-center gap-4">
-        <button
-          onClick={() => exportCanvas('png')}
-          disabled={isExporting}
-          className="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white rounded-lg transition-colors"
-        >
-          <Download size={16} />
-          {isExporting ? 'Exporting...' : 'Download PNG'}
-        </button>
-        <button
-          onClick={() => exportCanvas('jpeg')}
-          disabled={isExporting}
-          className="flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white rounded-lg transition-colors"
-        >
-          <Download size={16} />
-          {isExporting ? 'Exporting...' : 'Download JPEG'}
-        </button>
-        <button
-          onClick={() => exportCanvas('pdf')}
-          disabled={isExporting}
-          className="flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white rounded-lg transition-colors"
-        >
-          <Download size={16} />
-          {isExporting ? 'Exporting...' : 'Download PDF'}
-        </button>
+        )}
       </div>
     </div>
   );
 };
+
+export default CanvasVisualization;
