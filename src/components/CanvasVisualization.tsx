@@ -193,7 +193,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.keyPartnerships}</span>
                 Key Partnerships
               </div>
               {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
@@ -208,7 +207,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.keyActivities}</span>
                 Key Activities
               </div>
               {renderSectionContent('keyActivities', canvas.keyActivities, canvas.citations?.keyActivities)}
@@ -223,7 +221,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.valueProposition}</span>
                 Value Proposition
               </div>
               {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
@@ -238,7 +235,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.customerRelationships}</span>
                 Customer Relationships
               </div>
               {renderSectionContent('customerRelationships', canvas.customerRelationships, canvas.citations?.customerRelationships)}
@@ -253,7 +249,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.customerSegments}</span>
                 Customer Segments
               </div>
               {renderSectionContent('customerSegments', canvas.customerSegments, canvas.citations?.customerSegments)}
@@ -268,7 +263,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.keyResources}</span>
                 Key Resources
               </div>
               {renderSectionContent('keyResources', canvas.keyResources, canvas.citations?.keyResources)}
@@ -283,7 +277,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.channels}</span>
                 Channels
               </div>
               {renderSectionContent('channels', canvas.channels, canvas.citations?.channels)}
@@ -298,7 +291,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.costStructure}</span>
                 Cost Structure
               </div>
               {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
@@ -313,7 +305,6 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                <span className="mr-2">{sectionIcons.revenueStreams}</span>
                 Revenue Streams
               </div>
               {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
