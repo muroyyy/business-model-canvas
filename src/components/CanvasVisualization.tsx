@@ -80,23 +80,23 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
   const contentStyle = `${format === 'apu' ? 'text-xs' : 'text-sm'} leading-relaxed whitespace-pre-line`;
   const citationStyle = "text-xs text-gray-500 mt-2 italic border-t pt-2";
 
-  const sectionIcons = {
-    keyPartnerships: '🤝',
-    keyActivities: '⚡',
-    keyResources: '🎯',
-    valueProposition: '💎',
-    customerRelationships: '❤️',
-    channels: '📢',
-    customerSegments: '👥',
-    costStructure: '💰',
-    revenueStreams: '💵',
-    ipProtection: '🛡️',
-    technologyTransfer: '🔬',
-    regulatoryRequirements: '📋',
-    leanStartup: '🚀',
-    marketPresence: '🌐',
-    organizationalCulture: '🏢'
-  };
+  // const sectionIcons = {
+  //   keyPartnerships: '🤝',
+  //   keyActivities: '⚡',
+  //   keyResources: '🎯',
+  //   valueProposition: '💎',
+  //   customerRelationships: '❤️',
+  //   channels: '📢',
+  //   customerSegments: '👥',
+  //   costStructure: '💰',
+  //   revenueStreams: '💵',
+  //   ipProtection: '🛡️',
+  //   technologyTransfer: '🔬',
+  //   regulatoryRequirements: '📋',
+  //   leanStartup: '🚀',
+  //   marketPresence: '🌐',
+  //   organizationalCulture: '🏢'
+  // };
 
   const renderSectionContent = (key: keyof BusinessModelCanvas, content: string, citation?: string) => (
     <>
@@ -201,7 +201,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
         </div>
         
         {format === 'general' ? (
-          <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full">
+          <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full font-bold">
             {/* Key Partnerships */}
             <div 
               className={`${sectionStyle} row-span-2`}
