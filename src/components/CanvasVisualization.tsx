@@ -310,7 +310,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               {renderSectionContent('costStructure', canvas.costStructure, canvas.citations?.costStructure)}
             </div>
 
-            {/* Revenue Streams */}
+            {/* Value Proposition */}
             <div 
               className={`${sectionStyle} col-span-3`}
               style={{ 
@@ -319,7 +319,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               }}
             >
               <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
-                Revenue Streams
+                Value Proposition
               </div>
               {renderSectionContent('revenueStreams', canvas.revenueStreams, canvas.citations?.revenueStreams)}
             </div>
@@ -343,7 +343,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
                 {renderSectionContent('keyPartnerships', canvas.keyPartnerships, canvas.citations?.keyPartnerships)}
               </div>
 
-              {/* Value Proposition */}
+              {/* Revenue Streams */}
               <div 
                 className={sectionStyle}
                 style={{ 
@@ -353,7 +353,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
               >
                 <div className={titleStyle} style={{ color: selectedTheme.colors.text }}>
                   <span className="mr-2">{sectionIcons.valueProposition}</span>
-                  Value Proposition
+                  Revenue Streams
                 </div>
                 {renderSectionContent('valueProposition', canvas.valueProposition, canvas.citations?.valueProposition)}
               </div>
