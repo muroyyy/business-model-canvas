@@ -23,6 +23,24 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
 
+  const sectionIcons = {
+    keyPartnerships: '🤝',
+    keyActivities: '⚡',
+    keyResources: '🎯',
+    valueProposition: '💎',
+    customerRelationships: '❤️',
+    channels: '📢',
+    customerSegments: '👥',
+    costStructure: '💰',
+    revenueStreams: '💵',
+    ipProtection: '🛡️',
+    technologyTransfer: '🔬',
+    regulatoryRequirements: '📋',
+    leanStartup: '🚀',
+    marketPresence: '🌐',
+    organizationalCulture: '🏢'
+  };
+
   const downloadAsImage = async (imageFormat: 'png' | 'jpeg') => {
     if (!canvasRef.current) return;
     setIsExporting(true);
