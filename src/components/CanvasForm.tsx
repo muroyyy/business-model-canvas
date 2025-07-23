@@ -25,15 +25,15 @@ const CanvasForm: React.FC<CanvasFormProps> = ({
   const [focusedField, setFocusedField] = useState<keyof BusinessModelCanvas | null>(null);
 
   const generalSections = [
-    { key: 'keyPartnerships', label: 'Key Partnerships', icon: '🤝' },
-    { key: 'keyActivities', label: 'Key Activities', icon: '⚡' },
-    { key: 'keyResources', label: 'Key Resources', icon: '🎯' },
-    { key: 'valueProposition', label: 'Value Proposition', icon: '💎' },
-    { key: 'customerRelationships', label: 'Customer Relationships', icon: '❤️' },
-    { key: 'channels', label: 'Channels', icon: '📢' },
-    { key: 'customerSegments', label: 'Customer Segments', icon: '👥' },
-    { key: 'costStructure', label: 'Cost Structure', icon: '💰' },
-    { key: 'revenueStreams', label: 'Revenue Streams', icon: '💵' },
+    { key: 'keyPartnerships', label: 'Key Partnerships'},
+    { key: 'keyActivities', label: 'Key Activities'},
+    { key: 'keyResources', label: 'Key Resources'},
+    { key: 'valueProposition', label: 'Value Proposition'},
+    { key: 'customerRelationships', label: 'Customer Relationships'},
+    { key: 'channels', label: 'Channels'},
+    { key: 'customerSegments', label: 'Customer Segments'},
+    { key: 'costStructure', label: 'Cost Structure'},
+    { key: 'revenueStreams', label: 'Revenue Streams'},
   ] as const;
 
   const apuAdditionalSections = [
