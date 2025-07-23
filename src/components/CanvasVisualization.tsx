@@ -94,7 +94,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
   };
 
   const sectionStyle = "border-2 p-4 rounded-xl h-full min-h-[120px] transition-all duration-300 hover:shadow-lg";
-  const titleStyle = "font-bold text-sm mb-3 uppercase tracking-wide flex items-center";
+  const titleStyle = "font-extrabold text-sm mb-3 uppercase tracking-wide flex items-center";
   const contentStyle = `${format === 'apu' ? 'text-xs' : 'text-sm'} leading-relaxed whitespace-pre-line`;
   const citationStyle = "text-xs text-gray-500 mt-2 italic border-t pt-2";
 
@@ -197,7 +197,7 @@ const CanvasVisualization: React.FC<CanvasVisualizationProps> = ({
         </div>
         
         {format === 'general' ? (
-          <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full font-bold">
+          <div className="grid grid-cols-5 grid-rows-3 gap-4 h-full font-semibold">
             {/* Key Partnerships */}
             <div 
               className={`${sectionStyle} row-span-2`}
